@@ -7,7 +7,7 @@ A cordova plugin for Ionic with a fragment of barcode scanner camera activity. I
 Add barcode scanner plugin in your project
 
 ```
-  ionic cordova plugin add https://github.com/Cha-er-si/barcode-scanner.git --link
+  ionic cordova plugin add https://github.com/Cha-er-si/barcode-scanner-plugin.git --link
 ```
 
 Install the wrapper for the barcode scanner plugin

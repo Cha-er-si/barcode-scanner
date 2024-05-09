@@ -64,11 +64,7 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements CameraPrevie
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("coolMethod")) {
-            String message = args.getString(0);
-            coolMethod(message, callbackContext);
-            return true;
-        } else if(action.equals(STARTCAMERASCAN)) {
+        if(action.equals(STARTCAMERASCAN)) {
             if(!hasPermisssion()) {
                 requestPermissions(0);
             } else {
@@ -80,15 +76,7 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements CameraPrevie
 
         return true;
     }
-
-    private void coolMethod(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            callbackContext.success(message);
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
-        }
-    }
-
+    
     public void startCameraScan(CallbackContext callback) {
         this.startCameraCallback = callback;
         final float opacity = Float.parseFloat("1");

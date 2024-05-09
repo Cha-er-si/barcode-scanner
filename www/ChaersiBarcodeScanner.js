@@ -4,16 +4,6 @@ var scanInProgress = false;
 
 var ChaersiBarcodeScanner = function () {};
 
-ChaersiBarcodeScanner.coolMethod = function (
-  arg0,
-  successCallback,
-  errorCallback
-) {
-  exec(successCallback, errorCallback, "ChaersiBarcodeScanner", "coolMethod", [
-    arg0,
-  ]);
-};
-
 ChaersiBarcodeScanner.startCameraScan = function (
   successCallback,
   errorCallback

@@ -18,43 +18,62 @@ plugins {
     id 'java'
 }`;
 
-    // Find allprojects start index
-    const allProjectsIndex = data.indexOf("allprojects {");
+    // Locate the end of the buildscript block by finding the closing brace that matches the opening brace of the buildscript
+    let buildScriptDepth = 0;
+    let buildScriptEnd = -1;
+    let inBuildScript = false;
 
-    if (allProjectsIndex > -1) {
-      // Insert plugins block before allprojects block
+    for (let i = 0; i < data.length; i++) {
+      if (data.substring(i).startsWith("buildscript {")) {
+        inBuildScript = true;
+        buildScriptDepth++;
+      }
+      if (data[i] === "{" && inBuildScript) {
+        buildScriptDepth++;
+      }
+      if (data[i] === "}" && inBuildScript) {
+        buildScriptDepth--;
+        if (buildScriptDepth === 0) {
+          buildScriptEnd = i + 1;
+          break;
+        }
+      }
+    }
+
+    if (buildScriptEnd !== -1 && data.indexOf("plugins {") === -1) {
+      // Insert the plugins block immediately after the buildscript block
       const result =
-        data.slice(0, allProjectsIndex) +
+        data.slice(0, buildScriptEnd) +
         pluginsBlock +
         "\n" +
-        data.slice(allProjectsIndex);
+        data.slice(buildScriptEnd);
       fs.writeFile(gradleBuildFilePath, result, "utf8", function (err) {
         if (err) return console.log(err);
-        console.log("Successfully added plugins block before allprojects.");
+        console.log("Successfully added plugins block after buildscript.");
       });
-    } else if (data.indexOf("plugins {") === -1) {
-      // No allprojects block found, find end of buildscript block instead
-      const buildScriptEndIndex =
-        data.indexOf("}", data.indexOf("buildscript")) + 1;
-      if (buildScriptEndIndex > -1) {
-        const result =
-          data.slice(0, buildScriptEndIndex) +
-          "\n" +
-          pluginsBlock +
-          "\n" +
-          data.slice(buildScriptEndIndex);
-        fs.writeFile(gradleBuildFilePath, result, "utf8", function (err) {
-          if (err) return console.log(err);
-          console.log("Successfully added plugins block after buildscript.");
-        });
-      } else {
-        // No buildscript block, prepend plugins block to the file
-        const result = pluginsBlock + "\n" + data;
-        fs.writeFile(gradleBuildFilePath, result, "utf8", function (err) {
-          if (err) return console.log(err);
-          console.log("Plugins block added at the beginning of the file.");
-        });
-      }
+    } else if (data.indexOf("plugins {") > -1) {
+      // If plugins block already exists, ensure it contains the necessary plugins
+      const neededPlugins = [
+        "id 'com.github.johnrengelman.shadow' version '8.1.1'",
+        "id 'java'",
+      ];
+      let pluginsSection = data.substring(
+        data.indexOf("plugins {"),
+        data.indexOf("}", data.indexOf("plugins {")) + 1
+      );
+      neededPlugins.forEach((plugin) => {
+        if (!pluginsSection.includes(plugin.split(" ")[1])) {
+          pluginsSection = pluginsSection.replace(
+            /plugins\s*{/,
+            `$&\n    ${plugin}`
+          );
+        }
+      });
+      const newData = data.replace(/plugins\s*{[^}]*}/, pluginsSection);
+      fs.writeFile(gradleBuildFilePath, newData, "utf8", function (err) {
+        if (err) return console.log(err);
+        console.log("Updated existing plugins block.");
+      });
     }
   });
 };

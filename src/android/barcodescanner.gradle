@@ -1,7 +1,14 @@
-plugins {
-  id 'com.github.johnrengelman.shadow' version '8.1.1'
-  id 'java'
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.github.johnrengelman:shadow:8.1.1'
+    }
 }
+
+apply plugin: 'shadow'
+apply plugin: 'java'
 
 shadowJar {
     relocate 'com.google.zxing', 'chaersi.shaded.zxing'
@@ -16,10 +23,6 @@ repositories{
         dirs 'libs'
     }
 }
-
-// plugins {
-//     id 'com.github.johnrengelman.shadow' version '7.1.2'
-// }
 
 dependencies {
     implementation("com.google.zxing:core:3.4.1")

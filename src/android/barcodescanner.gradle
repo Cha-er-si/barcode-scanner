@@ -11,12 +11,12 @@ buildscript {
 
 apply plugin: "com.github.johnrengelman.shadow"
 
-// shadowJar {
-//     relocate 'com.google.zxing', 'chaersi.shaded.zxing'
-//     relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
-// }
+shadowJar {
+    relocate 'com.google.zxing', 'chaersi.shaded.zxing'
+    relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
+}
 
-// tasks.build.dependsOn shadowJar
+tasks.build.dependsOn shadowJar
 
 repositories{
     jcenter()

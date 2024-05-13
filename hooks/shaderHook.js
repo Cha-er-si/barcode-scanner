@@ -12,11 +12,6 @@ module.exports = function (context) {
   const pluginToAdd = `plugins {
     id "com.github.johnrengelman.shadow" version "7.1.1"
   }
-
-  shadowJar {
-    relocate 'com.google.zxing', 'shadowed.com.google.zxing'
-    relocate 'com.journeyapps', 'shadowed.com.journeyapps'
-  }
     `;
 
   // Insert the plugin block before the 'allprojects' block

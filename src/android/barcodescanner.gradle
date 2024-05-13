@@ -1,14 +1,15 @@
 buildscript {
-    repositories {
-        gradlePluginPortal()
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
     }
-    dependencies {
-        classpath 'com.github.johnrengelman:shadow:8.1.1'
-    }
+  }
+  dependencies {
+    classpath "com.github.johnrengelman:shadow:8.1.1"
+  }
 }
 
-// apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'java'
+apply plugin: "com.github.johnrengelman.shadow"
 
 shadowJar {
     relocate 'com.google.zxing', 'chaersi.shaded.zxing'

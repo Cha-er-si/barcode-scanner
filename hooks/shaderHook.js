@@ -8,26 +8,29 @@ module.exports = function (context) {
   );
   let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 
-  // Check if the plugin is already added
-  if (!buildGradle.includes("com.github.johnrengelman.shadow")) {
-    // Define the plugin block
-    const pluginToAdd = `plugins {
-            id "com.github.johnrengelman.shadow" version "7.1.1"
-        }
-        `;
-
-    /*
+  // Define the plugin block
+  const pluginToAdd = `plugins {
+        id "com.github.johnrengelman.shadow" version "7.1.1"
+    }
         
-shadowJar {
-    relocate 'com.google.zxing', 'shadowed.com.google.zxing'
-    relocate 'com.journeyapps', 'shadowed.com.journeyapps'
-}
+    shadowJar {
+        relocate 'com.google.zxing', 'shadowed.com.google.zxing'
+        relocate 'com.journeyapps', 'shadowed.com.journeyapps'
+    }
+    
+    tasks.build.dependsOn shadowJar
+    `;
 
-tasks.build.dependsOn shadowJar
- */
-
-    // Insert the plugin block at the top of the file
+  // Insert the plugin block before the 'allprojects' block
+  if (buildGradle.includes("allprojects {")) {
+    buildGradle = buildGradle.replace(
+      /allprojects \{/g,
+      pluginToAdd + "allprojects {"
+    );
+  } else {
+    // If 'allprojects' block doesn't exist, prepend at the top of the file
     buildGradle = pluginToAdd + buildGradle;
-    fs.writeFileSync(gradleBuildFile, buildGradle, "utf8");
   }
+
+  fs.writeFileSync(gradleBuildFile, buildGradle, "utf8");
 };

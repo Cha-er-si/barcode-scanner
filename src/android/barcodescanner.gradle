@@ -1,15 +1,15 @@
-buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
-  dependencies {
-    classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
-  }
-}
+// buildscript {
+//   repositories {
+//     maven {
+//       url "https://plugins.gradle.org/m2/"
+//     }
+//   }
+//   dependencies {
+//     classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
+//   }
+// }
 
-apply plugin: "com.github.johnrengelman.shadow"
+// apply plugin: "com.github.johnrengelman.shadow"
 
 repositories{
     jcenter()
@@ -21,17 +21,6 @@ repositories{
 dependencies {
     implementation("com.google.zxing:core:3.4.1")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
-}
-
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-task testJar(type: ShadowJar)  {
-    archiveBaseName.set('barcode-scanner-plugin')
-    archiveVersion.set('0.1.0')
-    archiveClassifier.set('')
-
-    relocate 'com.google.zxing', 'chaersi.shaded.zxing'
-    relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
 }
 
 android {

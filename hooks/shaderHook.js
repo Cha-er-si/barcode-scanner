@@ -17,10 +17,6 @@ module.exports = function (context) {
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 task testJar(type: ShadowJar)  {
-    archiveBaseName.set('barcode-scanner-plugin')
-    archiveVersion.set('0.1.0')
-    archiveClassifier.set('')
-
     relocate 'com.google.zxing', 'chaersi.shaded.zxing'
     relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
 }

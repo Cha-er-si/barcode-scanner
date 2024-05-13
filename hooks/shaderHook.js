@@ -12,9 +12,9 @@ module.exports = function (context) {
   const pluginToAdd = `plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "java"
-  }
-  
-  import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+  }`;
+
+  const shaderConfig = `import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
   
   task customShadowJar(type: ShadowJar) {
       relocate 'com.google.zxing', 'chaersi.shaded.zxing'
@@ -30,15 +30,24 @@ module.exports = function (context) {
   build.dependsOn customShadowJar
     `;
 
-  // Insert the plugin block before the 'allprojects' block
+  // Insert the plugin block before the 'buildscript' block
+  if (buildGradle.includes("buildscript {")) {
+    buildGradle = buildGradle.replace(
+      /buildscript \{/g,
+      pluginToAdd + "buildscript {"
+    );
+  } else {
+    // If 'buildscript' block doesn't exist, prepend at the top of the file
+    buildGradle = pluginToAdd + buildGradle;
+  }
+
   if (buildGradle.includes("allprojects {")) {
     buildGradle = buildGradle.replace(
       /allprojects \{/g,
-      pluginToAdd + "allprojects {"
+      shaderConfig + "allprojects {"
     );
   } else {
-    // If 'allprojects' block doesn't exist, prepend at the top of the file
-    buildGradle = pluginToAdd + buildGradle;
+    buildGradle = shaderConfig + buildGradle;
   }
 
   fs.writeFileSync(gradleBuildFile, buildGradle, "utf8");

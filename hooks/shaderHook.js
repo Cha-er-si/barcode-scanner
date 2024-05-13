@@ -41,5 +41,25 @@ module.exports = function (context) {
     buildGradle = pluginToAdd + buildGradle;
   }
 
+  if (!buildGradle.includes("task clean(type: Delete)")) {
+    // Define the custom task or modify as needed
+    const customTask = `
+task cleanModified(type: Delete) {
+  delete rootProject.buildDir
+}
+`;
+    const cleanTaskRegex = /task clean\(type: Delete\)[\s\S]*?\}/;
+
+    if (buildGradle.match(cleanTaskRegex)) {
+      // Replace existing 'clean' task
+      buildGradle = buildGradle.replace(cleanTaskRegex, customTask.trim());
+    } else {
+      // If no 'clean' task exists, add the new one
+      buildGradle = buildGradle + customTask;
+    }
+
+    fs.writeFileSync(gradleBuildFile, buildGradle, "utf8");
+  }
+
   fs.writeFileSync(gradleBuildFile, buildGradle, "utf8");
 };

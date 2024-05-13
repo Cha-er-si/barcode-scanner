@@ -20,9 +20,9 @@ android {
 }
 
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 apply plugin: "java"
+
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 task customShadowJar(type: ShadowJar) {
     relocate 'com.google.zxing', 'chaersi.shaded.zxing'

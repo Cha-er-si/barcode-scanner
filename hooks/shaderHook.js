@@ -24,7 +24,7 @@ module.exports = function (context) {
       archiveVersion.set('1.0.0')
       archiveClassifier.set('')
   
-      destinationDirectory.set(file("platform/android/src/main/libs"))
+      destinationDirectory.set(file("platforms/android/src/main/libs"))
   }
   
   build.dependsOn customShadowJar

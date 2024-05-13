@@ -4,7 +4,7 @@ const path = require("path");
 module.exports = function (context) {
   const gradleBuildFile = path.join(
     context.opts.projectRoot,
-    "platforms/android/app/build.gradle"
+    "platforms/android/build.gradle"
   );
   let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 

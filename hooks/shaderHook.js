@@ -9,14 +9,14 @@ module.exports = function (context) {
   let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 
   // Define the plugin block
-  const pluginToAdd = `plugins {
+  const pluginToAdd = `import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar 
+  
+  plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "java"
   }`;
 
-  const shaderConfig = `import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-  
-  task customShadowJar(type: ShadowJar) {
+  const shaderConfig = `task customShadowJar(type: ShadowJar) {
       relocate 'com.google.zxing', 'chaersi.shaded.zxing'
       relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
   

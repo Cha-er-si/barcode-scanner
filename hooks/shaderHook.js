@@ -8,17 +8,12 @@ module.exports = function (context) {
   );
   let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 
-  const libFolder = path.join(
-    context.opts.projectRoot,
-    "platforms/android/src/main/libs"
-  );
-
   // Define the plugin block
   const pluginToAdd = `plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "java"
   }
-
+  
   import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
   
   task customShadowJar(type: ShadowJar) {
@@ -29,7 +24,7 @@ module.exports = function (context) {
       archiveVersion.set('1.0.0')
       archiveClassifier.set('')
   
-      destinationDirectory.set(file("${libFolder}"))
+      destinationDirectory.set(file("${project.rootDir}/android/src/main/libs"))
   }
   
   build.dependsOn customShadowJar

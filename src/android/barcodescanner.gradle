@@ -29,14 +29,14 @@ task shadowJar(type: ShadowJar)  {
     archiveVersion.set('1.0.0')
     archiveClassifier.set('')
 
-    destinationDir = file("${project.rootDir}/android/libs")
+    destinationDir = file("${project.rootDir}/android/src/main/libs")
 }
 
 dependencies {
     implementation("com.google.zxing:core:3.4.1")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     
-    implementation files("android/libs/chaersi-shaded-library.jar")
+    implementation files("android/src/main/libs/chaersi-shaded-library.jar")
 }
 
 android {

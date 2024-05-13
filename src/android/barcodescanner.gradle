@@ -19,18 +19,3 @@ android {
     }
 }
 
-
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-task customShadowJar(type: ShadowJar) {
-    relocate 'com.google.zxing', 'chaersi.shaded.zxing'
-    relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
-
-    archiveBaseName.set('chaersi-shaded-library')
-    archiveVersion.set('1.0.0')
-    archiveClassifier.set('')
-
-    destinationDirectory.set(file("${project.rootDir}/android/src/main/libs"))
-}
-
-build.dependsOn customShadowJar

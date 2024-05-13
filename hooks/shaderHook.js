@@ -1,79 +1,45 @@
-const fs = require("fs");
-const path = require("path");
+var fs = require("fs");
+var path = require("path");
 
 module.exports = function (context) {
-  const gradleBuildFilePath = path.join(
-    context.opts.projectRoot,
-    "platforms/android/app/build.gradle"
+  var rootDir = context.opts.projectRoot;
+  var gradleBuildFile = path.join(
+    rootDir,
+    "platforms",
+    "android",
+    "app",
+    "build.gradle"
   );
 
-  fs.readFile(gradleBuildFilePath, "utf8", function (err, data) {
+  fs.readFile(gradleBuildFile, "utf8", function (err, data) {
     if (err) {
-      throw new Error("Unable to find Android build.gradle: " + err);
+      throw new Error("Failed to read build.gradle: " + err);
     }
 
-    const pluginsBlock = `
-plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'java'
-}`;
-
-    // Locate the end of the buildscript block by finding the closing brace that matches the opening brace of the buildscript
-    let buildScriptDepth = 0;
-    let buildScriptEnd = -1;
-    let inBuildScript = false;
-
-    for (let i = 0; i < data.length; i++) {
-      if (data.substring(i).startsWith("buildscript {")) {
-        inBuildScript = true;
-        buildScriptDepth++;
-      }
-      if (data[i] === "{" && inBuildScript) {
-        buildScriptDepth++;
-      }
-      if (data[i] === "}" && inBuildScript) {
-        buildScriptDepth--;
-        if (buildScriptDepth === 0) {
-          buildScriptEnd = i + 1;
-          break;
-        }
-      }
+    // Ensure the plugin is added
+    if (!data.includes("com.github.johnrengelman.shadow")) {
+      var pluginToAdd =
+        "id 'com.github.johnrengelman.shadow' version '7.1.1'\n";
+      data = data.replace("plugins {", `plugins {\n    ${pluginToAdd}`);
     }
 
-    if (buildScriptEnd !== -1 && data.indexOf("plugins {") === -1) {
-      // Insert the plugins block immediately after the buildscript block
-      const result =
-        data.slice(0, buildScriptEnd) +
-        pluginsBlock +
-        "\n" +
-        data.slice(buildScriptEnd);
-      fs.writeFile(gradleBuildFilePath, result, "utf8", function (err) {
-        if (err) return console.log(err);
-        console.log("Successfully added plugins block after buildscript.");
-      });
-    } else if (data.indexOf("plugins {") > -1) {
-      // If plugins block already exists, ensure it contains the necessary plugins
-      const neededPlugins = [
-        "id 'com.github.johnrengelman.shadow' version '8.1.1'",
-        "id 'java'",
-      ];
-      let pluginsSection = data.substring(
-        data.indexOf("plugins {"),
-        data.indexOf("}", data.indexOf("plugins {")) + 1
-      );
-      neededPlugins.forEach((plugin) => {
-        if (!pluginsSection.includes(plugin.split(" ")[1])) {
-          pluginsSection = pluginsSection.replace(
-            /plugins\s*{/,
-            `$&\n    ${plugin}`
-          );
-        }
-      });
-      const newData = data.replace(/plugins\s*{[^}]*}/, pluginsSection);
-      fs.writeFile(gradleBuildFilePath, newData, "utf8", function (err) {
-        if (err) return console.log(err);
-        console.log("Updated existing plugins block.");
-      });
+    // Add shadowJar configuration if not already present
+    if (!data.includes("shadowJar {")) {
+      var shadowConfig = `
+shadowJar {
+    relocate 'com.google.zxing', 'shadowed.com.google.zxing'
+    relocate 'com.journeyapps', 'shadowed.com.journeyapps'
+}
+`;
+      // Insert before the first task or at the end of the file
+      var position = data.lastIndexOf("}");
+      data =
+        data.substring(0, position) + shadowConfig + data.substring(position);
     }
+
+    // Write the modified build.gradle back to file
+    fs.writeFile(gradleBuildFile, data, "utf8", function (err) {
+      if (err) throw new Error("Failed to write build.gradle: " + err);
+    });
   });
 };

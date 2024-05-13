@@ -21,8 +21,7 @@ repositories{
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-// task shadowJar(type: ShadowJar)
-shadowJar {
+task customShadowJar(type: ShadowJar) {
     relocate 'com.google.zxing', 'chaersi.shaded.zxing'
     relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
 
@@ -32,6 +31,8 @@ shadowJar {
 
     destinationDir = file("${project.rootDir}/android/src/main/libs")
 }
+
+build.dependsOn customShadowJar
 
 dependencies {
     implementation("com.google.zxing:core:3.4.1")

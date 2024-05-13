@@ -21,7 +21,8 @@ repositories{
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-task shadowJar(type: ShadowJar)  {
+// task shadowJar(type: ShadowJar)
+shadowJar {
     relocate 'com.google.zxing', 'chaersi.shaded.zxing'
     relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
 

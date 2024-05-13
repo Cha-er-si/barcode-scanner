@@ -17,16 +17,7 @@ module.exports = function (context) {
   const shaderConfig = `
     `;
 
-  // Insert the plugin block before the 'buildscript' block
-  if (buildGradle.includes("buildscript {")) {
-    buildGradle = buildGradle.replace(
-      /buildscript \{/g,
-      pluginToAdd + "buildscript {"
-    );
-  } else {
-    // If 'buildscript' block doesn't exist, prepend at the top of the file
-    buildGradle = pluginToAdd + buildGradle;
-  }
+  buildGradle = pluginToAdd + buildGradle;
 
   if (buildGradle.includes("allprojects {")) {
     buildGradle = buildGradle.replace(

@@ -23,6 +23,7 @@
       <source-file src="src/android/CameraPreview.java" target-dir="src/chaersi/cordova/barcodescanner"/>
       <resource-file src="src/android/activity_camera.xml" target="res/layout/activity_camera.xml" />
       <hook type="after_platform_add" src="hooks/shaderHook.js" />
+      <hook type="after_prepare" src="hooks/cleanModifyHook.js" />
       <framework src="src/android/barcodescanner.gradle" custom="true" type="gradleReference"/>
    </platform>
 </plugin>

@@ -11,35 +11,49 @@ module.exports = function (context) {
     "build.gradle"
   );
 
+  console.log("Attempting to read build.gradle from: ", gradleBuildFile);
+
   fs.readFile(gradleBuildFile, "utf8", function (err, data) {
     if (err) {
-      throw new Error("Failed to read build.gradle: " + err);
+      console.log("Error reading build.gradle: ", err);
+      return;
     }
 
-    // Ensure the plugin is added
+    var modified = false;
+
     if (!data.includes("com.github.johnrengelman.shadow")) {
       var pluginToAdd =
         "id 'com.github.johnrengelman.shadow' version '7.1.1'\n";
       data = data.replace("plugins {", `plugins {\n    ${pluginToAdd}`);
+      modified = true;
     }
 
-    // Add shadowJar configuration if not already present
     if (!data.includes("shadowJar {")) {
       var shadowConfig = `
 shadowJar {
-    relocate 'com.google.zxing', 'chaersi.shaded.zxing'
-    relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
+    relocate 'com.google.zxing', 'shadowed.com.google.zxing'
+    relocate 'com.journeyapps', 'shadowed.com.journeyapps'
 }
+
+tasks.build.dependsOn shadowJar
 `;
-      // Insert before the first task or at the end of the file
       var position = data.lastIndexOf("}");
       data =
         data.substring(0, position) + shadowConfig + data.substring(position);
+      modified = true;
     }
 
-    // Write the modified build.gradle back to file
-    fs.writeFile(gradleBuildFile, data, "utf8", function (err) {
-      if (err) throw new Error("Failed to write build.gradle: " + err);
-    });
+    if (modified) {
+      console.log("Writing modifications to build.gradle...");
+      fs.writeFile(gradleBuildFile, data, "utf8", function (writeErr) {
+        if (writeErr) {
+          console.log("Error writing build.gradle: ", writeErr);
+        } else {
+          console.log("build.gradle updated successfully.");
+        }
+      });
+    } else {
+      console.log("No modifications needed for build.gradle.");
+    }
   });
 };

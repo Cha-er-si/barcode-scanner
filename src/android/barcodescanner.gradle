@@ -16,7 +16,7 @@
 //     relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
 // }
 
-tasks.build.dependsOn shadowJar
+// tasks.build.dependsOn shadowJar
 
 repositories{
     jcenter()

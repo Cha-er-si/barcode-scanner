@@ -17,10 +17,16 @@ task cleanModified(type: Delete) {
 }
 `;
 
+    const cleanModifiedRegex =
+      /task cleanModified\(type: Delete\) \{\s*delete rootProject.buildDir\s*\}/;
+
+    if (buildGradle.includes("task cleanModified(type: Delete) {")) {
+      buildGradle = buildGradle.replace(cleanModifiedRegex, "");
+    }
+
     // Regular expression to find the existing clean task definition
     const cleanTaskRegex =
       /task clean\(type: Delete\) \{\s*delete rootProject.buildDir\s*\}/;
-
     // Check if the clean task is already defined and replace it
     if (buildGradle.includes("task clean(type: Delete) {")) {
       buildGradle = buildGradle.replace(cleanTaskRegex, modifiedCleanTask);

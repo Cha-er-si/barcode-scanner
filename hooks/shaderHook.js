@@ -9,9 +9,7 @@ module.exports = function (context) {
   let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 
   // Define the plugin block
-  const pluginToAdd = `import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-  plugins {
+  const pluginToAdd = `plugins {
     id "com.github.johnrengelman.shadow" version "7.1.1"
   }
 

@@ -9,16 +9,16 @@ module.exports = function (context) {
   let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 
   // Define the plugin block
-  const pluginToAdd = `plugins {
-        id "com.github.johnrengelman.shadow" version "7.1.1"
-    }
-        
-    shadowJar {
-        relocate 'com.google.zxing', 'shadowed.com.google.zxing'
-        relocate 'com.journeyapps', 'shadowed.com.journeyapps'
-    }
-    
-    tasks.build.dependsOn shadowJar
+  const pluginToAdd = `import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+  plugins {
+    id "com.github.johnrengelman.shadow" version "7.1.1"
+  }
+
+  shadowJar {
+    relocate 'com.google.zxing', 'shadowed.com.google.zxing'
+    relocate 'com.journeyapps', 'shadowed.com.journeyapps'
+  }
     `;
 
   // Insert the plugin block before the 'allprojects' block

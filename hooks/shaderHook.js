@@ -27,8 +27,8 @@ module.exports = function (context) {
     if (!data.includes("shadowJar {")) {
       var shadowConfig = `
 shadowJar {
-    relocate 'com.google.zxing', 'shadowed.com.google.zxing'
-    relocate 'com.journeyapps', 'shadowed.com.journeyapps'
+    relocate 'com.google.zxing', 'chaersi.shaded.zxing'
+    relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
 }
 `;
       // Insert before the first task or at the end of the file

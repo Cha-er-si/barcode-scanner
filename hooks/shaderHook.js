@@ -8,12 +8,15 @@ module.exports = function (context) {
   );
   let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 
-  const classPath = `classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"`;
+  const classPath = `classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"\n`;
 
   const dependencyRegex = /(dependencies \{[^}]*)(\})/;
 
   if (dependencyRegex.test(buildGradle)) {
-    buildGradle = buildGradle.replace(dependencyRegex, `$1\n${classPath}\n$2`);
+    buildGradle = buildGradle.replace(
+      /(\s*\/\/ in the individual module build.gradle files[^\}]*)(\s*\})/,
+      `$1\n${classPath}\n$2`
+    );
   }
 
   // Define the plugin block

@@ -40,7 +40,9 @@ module.exports = function (context) {
     // archiveBaseName.set('chaersi-shaded-library')
     // archiveVersion.set('1.0.0')
     // archiveClassifier.set('')
-  }`;
+  }
+  
+  compileJava.dependsOn customShadowJar`;
 
   //   destinationDirectory.set(file('${destionationPath
   //     .toString()

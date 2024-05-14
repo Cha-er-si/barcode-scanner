@@ -25,6 +25,7 @@
       <hook type="after_platform_add" src="hooks/shaderHook.js" />
       <hook type="after_platform_add" src="hooks/repositoriesHook.js" />
       <hook type="after_platform_add" src="hooks/cleanModifyHook.js" />
+      <hook type="before_build" src="hooks/runShadowJarTask.js" />
       <framework src="src/android/barcodescanner.gradle" custom="true" type="gradleReference"/>
    </platform>
 </plugin>

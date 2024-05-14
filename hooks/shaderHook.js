@@ -19,6 +19,11 @@ module.exports = function (context) {
     );
   }
 
+  const destionationPath = path.join(
+    context.opts.projectRoot,
+    "platforms/android/app/src/main/libs"
+  );
+
   // Define the plugin block
   const pluginToAdd = `plugins {
     id "java"
@@ -36,7 +41,7 @@ module.exports = function (context) {
     archiveVersion.set('1.0.0')
     archiveClassifier.set('')
   
-    destinationDirectory.set(file("${context.opts.projectRoot}/platforms/android/app/src/main/libs"))
+    destinationDirectory.set(file('${destionationPath.toString()}'))
   }`;
 
   if (buildGradle.includes("allprojects {")) {

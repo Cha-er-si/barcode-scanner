@@ -19,7 +19,7 @@ module.exports = function (context) {
   if (repoRegex.test(repositoriesGradle)) {
     repositoriesGradle = repositoriesGradle.replace(
       repoRegex,
-      `$1\n${reposToAdd}\n$2`
+      `$1\n${repositories}\n$2`
     );
   } else {
     repositoriesGradle = pluginToAdd + repositoriesGradle;

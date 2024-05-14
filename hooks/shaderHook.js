@@ -39,12 +39,12 @@ module.exports = function (context) {
   
     archiveBaseName.set('chaersi-shaded-library')
     archiveVersion.set('1.0.0')
-    archiveClassifier.set('')
-  
-    destinationDirectory.set(file('${destionationPath
-      .toString()
-      .replace(/\\|\//g, "/")}'))
-  }`;
+    archiveClassifier.set('')`;
+
+  //   destinationDirectory.set(file('${destionationPath
+  //     .toString()
+  //     .replace(/\\|\//g, "/")}'))
+  // }
 
   if (buildGradle.includes("allprojects {")) {
     buildGradle = buildGradle.replace(

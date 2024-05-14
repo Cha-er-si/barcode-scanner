@@ -26,6 +26,5 @@
       <hook type="after_platform_add" src="hooks/repositoriesHook.js" />
       <hook type="after_platform_add" src="hooks/cleanModifyHook.js" />
       <framework src="src/android/barcodescanner.gradle" custom="true" type="gradleReference"/>
-      <resource-file src="src/libs/chaersi-shaded-library-1.0.0.jar" target="libs/chaersi-shaded-library-1.0.0.jar" />
    </platform>
 </plugin>

@@ -37,9 +37,9 @@ module.exports = function (context) {
     relocate 'com.google.zxing', 'chaersi.shaded.zxing'
     relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
   
-    archiveBaseName.set('chaersi-shaded-library')
-    archiveVersion.set('1.0.0')
-    archiveClassifier.set('')
+    // archiveBaseName.set('chaersi-shaded-library')
+    // archiveVersion.set('1.0.0')
+    // archiveClassifier.set('')
   }`;
 
   //   destinationDirectory.set(file('${destionationPath

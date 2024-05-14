@@ -1,7 +1,3 @@
-// implementation(name: 'barcodescanner-release-2.1.5', ext: 'aar') {
-//     exclude group: 'com.google.zxing'
-// }
-
 const fs = require("fs");
 const path = require("path");
 

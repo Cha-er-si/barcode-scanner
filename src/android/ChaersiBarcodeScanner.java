@@ -24,7 +24,7 @@ import org.apache.cordova.PluginResult;
 import org.apache.cordova.PermissionHelper;
 
 // import com.google.zxing.client.android.CaptureActivity;
-import chaersi.shaded.journeyapps.barcodescanner.CaptureActivity;
+import com.journeyapps.barcodescanner.CaptureActivity;
 import chaersi.cordova.barcodescanner.CameraPreview.BarcodeScanInterface;
 // import com.google.zxing.client.android.encode.EncodeActivity;
 import com.google.zxing.client.android.Intents;
@@ -36,7 +36,7 @@ import android.widget.FrameLayout;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.common.BitMatrix;
-import chaersi.shaded.journeyapps.barcodescanner.BarcodeEncoder;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.google.zxing.WriterException;
 import android.view.View;
 import android.view.ViewParent;

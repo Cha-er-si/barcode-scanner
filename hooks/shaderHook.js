@@ -14,19 +14,19 @@ module.exports = function (context) {
     id "java"
   }`;
 
-  const shaderConfig = `
-    `;
+  // const shaderConfig = `
+  //   `;
 
   buildGradle = pluginToAdd + buildGradle;
 
-  if (buildGradle.includes("allprojects {")) {
-    buildGradle = buildGradle.replace(
-      /allprojects \{/g,
-      shaderConfig + "allprojects {"
-    );
-  } else {
-    buildGradle = shaderConfig + buildGradle;
-  }
+  // if (buildGradle.includes("allprojects {")) {
+  //   buildGradle = buildGradle.replace(
+  //     /allprojects \{/g,
+  //     shaderConfig + "allprojects {"
+  //   );
+  // } else {
+  //   buildGradle = shaderConfig + buildGradle;
+  // }
 
   fs.writeFileSync(gradleBuildFile, buildGradle, "utf8");
 };

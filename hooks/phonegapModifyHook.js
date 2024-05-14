@@ -15,7 +15,7 @@ implementation(name: 'barcodescanner-release-2.1.5', ext: 'aar') {
     exclude group: 'com.google.zxing'
 }
 `;
-    buildGradleContent.replace(
+    buildGradle.replace(
       /implementation\(name: 'barcodescanner-release-2\.1\.5', ext: 'aar'\)/g,
       modifiedPhonegap
     );

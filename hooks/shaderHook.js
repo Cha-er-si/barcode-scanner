@@ -41,9 +41,9 @@ module.exports = function (context) {
     archiveVersion.set('1.0.0')
     archiveClassifier.set('')
   
-    destinationDirectory.set(file('${path.normalize(
-      destionationPath.toString()
-    )}'))
+    destinationDirectory.set(file('${destionationPath
+      .toString()
+      .replace(/\\|\//g, "/")}'))
   }`;
 
   if (buildGradle.includes("allprojects {")) {

@@ -17,7 +17,10 @@ module.exports = function (context) {
         }
     }
 `;
-    buildGradle.replace(/dependencies \{/, dependencyBlock);
+    buildGradle.replace(
+      /dependencies\s*\{\s*implementation\(name:\s*'barcodescanner-release-2\.1\.5',\s*ext:\s*'aar'\)\s*\}/,
+      modifiedPhonegap
+    );
 
     fs.writeFileSync(gradleBuildFile, buildGradle, "utf8");
   }

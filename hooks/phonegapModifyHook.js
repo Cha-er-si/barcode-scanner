@@ -11,14 +11,13 @@ module.exports = function (context) {
     let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 
     const modifiedPhonegap = `
-implementation(name: 'barcodescanner-release-2.1.5', ext: 'aar') {
-    exclude group: 'com.google.zxing'
-}
+    dependencies {
+        implementation(name: 'barcodescanner-release-2.1.5', ext: 'aar') {
+            exclude group: 'com.google.zxing'
+        }
+    }
 `;
-    buildGradle.replace(
-      /implementation\(name: 'barcodescanner-release-2\.1\.5', ext: 'aar'\)/g,
-      modifiedPhonegap
-    );
+    buildGradle.replace(/dependencies \{/, dependencyBlock);
 
     fs.writeFileSync(gradleBuildFile, buildGradle, "utf8");
   }

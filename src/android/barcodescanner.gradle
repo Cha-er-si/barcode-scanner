@@ -25,4 +25,10 @@ configurations.all {
         force 'com.google.zxing:core:3.4.1'
         force 'com.journeyapps:zxing-android-embedded:4.3.0'
     }
+
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'com.google.zxing') {
+            details.useVersion '3.4.1'
+        }
+    }
 }

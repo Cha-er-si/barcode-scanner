@@ -13,10 +13,7 @@ module.exports = function (context) {
   const dependencyRegex = /(dependencies \{[^}]*)(\})/;
 
   if (dependencyRegex.test(buildGradle)) {
-    buildGradle = buildGradle.replace(
-      dependencyRegex,
-      `$1\n${classPath}\n    $2`
-    );
+    buildGradle = buildGradle.replace(dependencyRegex, `$1\n${classPath}\n$2`);
   }
 
   // Define the plugin block

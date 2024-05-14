@@ -10,11 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import chaersi.shaded.zxing.ResultPoint;
-import chaersi.shaded.journeyapps.barcodescanner.BarcodeCallback;
-import chaersi.shaded.journeyapps.barcodescanner.BarcodeResult;
-import chaersi.shaded.journeyapps.barcodescanner.CaptureManager;
-import chaersi.shaded.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.google.zxing.ResultPoint;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.CaptureManager;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class CameraPreview extends Fragment {
                              Bundle savedInstanceState) {
         appResourcePackage = getActivity().getPackageName();
         View rootView = inflater.inflate(getResources().getIdentifier("activity_camera", "layout", appResourcePackage), container, false);
-        barcodeScannerView = rootView.findViewById(chaersi.shaded.zxing.client.android.R.id.zxing_barcode_scanner);
+        barcodeScannerView = rootView.findViewById(com.google.zxing.client.android.R.id.zxing_barcode_scanner);
         barcodeScannerView.initializeFromIntent(getActivity().getIntent());
         barcodeScannerView.setStatusText("");
         capture = new CaptureManager(getActivity(), barcodeScannerView);

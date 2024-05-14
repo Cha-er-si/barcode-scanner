@@ -17,7 +17,7 @@ module.exports = function (context) {
   // const shaderConfig = `
   //   `;
 
-  buildGradle = pluginToAdd + buildGradle;
+  // buildGradle = pluginToAdd + buildGradle;
 
   // if (buildGradle.includes("allprojects {")) {
   //   buildGradle = buildGradle.replace(

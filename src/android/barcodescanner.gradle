@@ -5,10 +5,12 @@ buildscript {
     }
   }
   dependencies {
+    classpath 'com.android.tools.build:gradle:7.0.0'
     classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.1"
   }
 }
 
+apply plugin: 'com.android.library'
 apply plugin: "com.github.johnrengelman.shadow"
 
 repositories{
@@ -25,24 +27,32 @@ dependencies {
     implementation files("android/app/src/main/libs/chaersi-shaded-library.jar")
 }
 
+shadowJar {
+    relocate 'com.google.zxing', 'chaersi.shaded.zxing'
+    relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
+
+    destinationDir = file("/platforms/android/app/src/main/libs")
+}
+
 android {
+    compileSdkVersion 31
     packagingOptions {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
     }
 }
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar 
+// import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar 
   
-task customShadowJar(type: ShadowJar) {
-    relocate 'com.google.zxing', 'chaersi.shaded.zxing'
-    relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
+// task customShadowJar(type: ShadowJar) {
+//     relocate 'com.google.zxing', 'chaersi.shaded.zxing'
+//     relocate 'com.journeyapps', 'chaersi.shaded.journeyapps'
   
-    archiveBaseName.set('chaersi-shaded-library')
-    archiveVersion.set('1.0.0')
-    archiveClassifier.set('')
+//     archiveBaseName.set('chaersi-shaded-library')
+//     archiveVersion.set('1.0.0')
+//     archiveClassifier.set('')
   
-    destinationDir = file("/platforms/android/app/src/main/libs")
-}
+//     destinationDir = file("/platforms/android/app/src/main/libs")
+// }
   
-build.dependsOn customShadowJar
+// build.dependsOn customShadowJar

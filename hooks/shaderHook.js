@@ -42,7 +42,7 @@ module.exports = function (context) {
   if (buildGradle.includes("allprojects {")) {
     buildGradle = buildGradle.replace(
       /allprojects \{/g,
-      pluginToAdd + "allprojects {"
+      pluginToAdd + "\n allprojects {"
     );
   } else {
     buildGradle = pluginToAdd + buildGradle;

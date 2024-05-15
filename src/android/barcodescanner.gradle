@@ -10,37 +10,6 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }
 
-import org.gradle.api.tasks.bundling.Jar
-
-task relocateZxing(type: Jar) {
-    // Set the output directory and final JAR name
-    destinationDir = file("$buildDir/libs")
-    archiveBaseName = 'relocated-zxing'
-
-    // Specify what to include in the custom JAR
-    from(zipTree(configurations.compileClasspath.find { it.name.contains("zxing") })) {
-        // Relocate the classes
-        eachFile { details ->
-            if (details.name.endsWith(".class")) {
-                details.path = details.path.replace("com/google/zxing", "shaded/com/google/zxing")
-            }
-        }
-        include "**/*.class"
-    }
-
-    // Exclude original JAR to prevent duplication in the build output
-    doFirst {
-        configurations.compileClasspath = configurations.compileClasspath.filter { !it.name.contains("zxing") }
-    }
-}
-
-compileJava.dependsOn(relocateZxing)
-
-runtimeClasspath {
-    exclude group: 'com.google.zxing'
-    plus files("$buildDir/libs/relocated-zxing.jar")
-}
-
 android {
     compileSdkVersion 31
     packagingOptions {

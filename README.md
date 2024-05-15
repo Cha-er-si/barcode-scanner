@@ -22,6 +22,23 @@ If you want other version of the wrapper
 npm install https://github.com/Cha-er-si/awesome-cordova-plugins-chaersi-barcodescanner.git#<Version Number>
 ```
 
+Add this to your config.xml
+
+```
+<preference name="android-targetSdkVersion" value="34" />
+<preference name="android-compileSdkVersion" value="34" />
+```
+
+When you add platform to your project for android it must be the latest
+
+```
+cordova platform add android@latest
+```
+or
+```
+ionic cordova platform add android@latest
+```
+
 ## Usage/Examples
 
 Import the barcode scanner.

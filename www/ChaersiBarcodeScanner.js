@@ -48,4 +48,39 @@ ChaersiBarcodeScanner.startCameraScan = function (
   );
 };
 
+ChaersiBarcodeScanner.isCameraReady = function (
+  successCallback,
+  errorCallback
+) {
+  if (errorCallback == null) {
+    errorCallback = function () {};
+  }
+
+  if (typeof errorCallback != "function") {
+    console.log(
+      "ChaersiBarcodeScanner.isCameraReady failure: failure parameter not a function"
+    );
+    return;
+  }
+
+  if (typeof successCallback != "function") {
+    console.log(
+      "ChaersiBarcodeScanner.isCameraReady failure: success callback parameter must be a function"
+    );
+    return;
+  }
+
+  exec(
+    function (result) {
+      successCallback(result);
+    },
+    function (error) {
+      errorCallback(error);
+    },
+    "ChaersiBarcodeScanner",
+    "isCameraReady",
+    []
+  );
+};
+
 module.exports = ChaersiBarcodeScanner;

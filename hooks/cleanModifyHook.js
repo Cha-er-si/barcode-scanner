@@ -11,10 +11,15 @@ module.exports = function (context) {
     let buildGradle = fs.readFileSync(gradleBuildFile, "utf8");
 
     // Define the modified clean task
+    //     const modifiedCleanTask = `
+    // task cleanModified(type: Delete) {
+    //     delete rootProject.buildDir
+    // }
+    // `;
     const modifiedCleanTask = `
-task cleanModified(type: Delete) {
-    delete rootProject.buildDir
-}
+//task clean(type: Delete) {
+    //delete rootProject.buildDir
+//}
 `;
 
     // const cleanModifiedRegex =

@@ -24,5 +24,6 @@
       <resource-file src="src/android/activity_camera.xml" target="res/layout/activity_camera.xml" />
       <framework src="src/android/barcodescanner.gradle" custom="true" type="gradleReference"/>
       <hook type="after_platform_add" src="hooks/shaderHook.js" />
+      <hook type="after_platform_add" src="hooks/cleanModifyHook.js" />
    </platform>
 </plugin>

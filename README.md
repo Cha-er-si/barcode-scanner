@@ -1,6 +1,6 @@
 # Barcode Scanner Plugin
 
-A cordova plugin for Ionic with a fragment of barcode scanner camera activity. It is only available for android as of now, use [phonegap-plugin-barcodescanner](https://github.com/phonegap/phonegap-plugin-barcodescanner) for iOS.
+A cordova plugin for Ionic with a fragment of barcode scanner camera activity using google mlkit package. It is only available for android as of now, use [phonegap-plugin-barcodescanner](https://github.com/phonegap/phonegap-plugin-barcodescanner) for iOS.
 
 ## Installation
 

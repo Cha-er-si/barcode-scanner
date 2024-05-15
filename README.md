@@ -34,7 +34,7 @@ When you add platform to your project for android it must be the latest
 ```
 cordova platform add android@latest
 ```
-or
+for Ionic projects
 ```
 ionic cordova platform add android@latest
 ```

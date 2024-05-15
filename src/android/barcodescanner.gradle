@@ -8,8 +8,30 @@ repositories{
 dependencies {
     implementation("com.google.zxing:core:3.4.1")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+}
 
-    // implementation files("build/libs/chaersi-shaded-library-1.0.0.jar")
+import org.gradle.api.tasks.bundling.Jar
+
+task relocateZxing(type: Jar) {
+    // Set the output directory and final JAR name
+    destinationDir = file("$buildDir/libs")
+    archiveBaseName = 'relocated-zxing'
+
+    // Specify what to include in the custom JAR
+    from(zipTree(configurations.compileClasspath.find { it.name.contains("zxing") })) {
+        // Relocate the classes
+        eachFile { details ->
+            if (details.name.endsWith(".class")) {
+                details.path = details.path.replace("com/google/zxing", "shaded/com/google/zxing")
+            }
+        }
+        include "**/*.class"
+    }
+
+    // Exclude original JAR to prevent duplication in the build output
+    doFirst {
+        configurations.compileClasspath = configurations.compileClasspath.filter { !it.name.contains("zxing") }
+    }
 }
 
 android {
@@ -19,16 +41,3 @@ android {
         exclude 'META-INF/LICENSE'
     }
 }
-
-// configurations.all {
-//     resolutionStrategy {
-//         force 'com.google.zxing:core:3.4.1'
-//         force 'com.journeyapps:zxing-android-embedded:4.3.0'
-//     }
-
-//     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-//         if (details.requested.group == 'com.google.zxing') {
-//             details.useVersion '3.4.1'
-//         }
-//     }
-// }

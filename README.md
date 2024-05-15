@@ -53,6 +53,8 @@ Add a constructor for the barcode scanner.
  constructor(private customBarcodeScanner: ChaersiBarcodeScanner) {}
 ```
 
+### startCamera()
+
 Add it on ngOnInit.
 
 ```javascript
@@ -68,6 +70,21 @@ Add it on ngOnInit.
         });
     });
   }
+```
+
+### isCameraReady()
+
+isCameraReady() returns boolean as string ("true"/"false")
+
+```
+this.customBarcodeScanner
+  .isCameraReady()
+  .then((result) => {
+    // Handle Result
+  })
+  .catch((error) => {
+    // Handle Error
+  });
 ```
 
 You are free to do what you need from the result.

@@ -24,20 +24,21 @@ import org.apache.cordova.PluginResult;
 import org.apache.cordova.PermissionHelper;
 
 // import com.google.zxing.client.android.CaptureActivity;
-import com.journeyapps.barcodescanner.CaptureActivity;
-import chaersi.cordova.barcodescanner.CameraPreview.BarcodeScanInterface;
+// import com.journeyapps.barcodescanner.CaptureActivity;
+// import chaersi.cordova.barcodescanner.CameraPreview.BarcodeScanInterface;
 // import com.google.zxing.client.android.encode.EncodeActivity;
-import com.google.zxing.client.android.Intents;
+// import com.google.zxing.client.android.Intents;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.widget.FrameLayout;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
-import com.google.zxing.WriterException;
+import chaersi.cordova.barcodescanner.ScannerFragment;
+// import com.google.zxing.BarcodeFormat;
+// import com.google.zxing.qrcode.QRCodeWriter;
+// import com.google.zxing.common.BitMatrix;
+// import com.journeyapps.barcodescanner.BarcodeEncoder;
+// import com.google.zxing.WriterException;
 import android.view.View;
 import android.view.ViewParent;
 import android.view.ViewGroup;
@@ -46,7 +47,9 @@ import androidx.annotation.ColorInt;
 /**
  * This class echoes a string called from JavaScript.
  */
-public class ChaersiBarcodeScanner extends CordovaPlugin implements CameraPreview.BarcodeScanInterface {
+public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragment.ScannerResultListener {
+    private static final String STARTCAMERASCAN = "startCameraScan";
+    private static final String ISCAMERAREADY = "isCameraReady";
 
     private static final String LOG_TAG = "BarcodeScanner";
 
@@ -55,10 +58,11 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements CameraPrevie
     private JSONArray requestArgs;
     private CallbackContext callbackContext;
 
-    private CameraPreview cameraPreview;
+    private ScannerFragment cameraPreview;
 
     private CallbackContext startCameraCallback;
-    private static final String STARTCAMERASCAN = "startCameraScan";
+    private CallbackContext cameraReadyCallback;
+
     private int containerViewId = 20;
     private ViewParent webViewParent;
 
@@ -70,6 +74,8 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements CameraPrevie
             } else {
                 startCameraScan(callbackContext);
             }
+        } else if (action.equals(ISCAMERAREADY)) {
+            isCameraReady(callbackContext);
         } else {
             return false;
         }
@@ -124,7 +130,7 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements CameraPrevie
                     containerView.bringToFront();
                 }
         
-                cameraPreview = new CameraPreview();
+                cameraPreview = new ScannerFragment();
                 cameraPreview.setEventListener(ChaersiBarcodeScanner.this);
                 FragmentManager fragmentManager = cordova.getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -136,9 +142,23 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements CameraPrevie
     }
 
     @Override
-    public void onBarcodeScanned(String barcodeData) {
-        Log.i("Scan Result", barcodeData);
-        this.startCameraCallback.success(barcodeData);
+    public void onQRCodeScanned(String qrCode) {
+        Log.i("Received QR Code: ", qrCode);
+        this.startCameraCallback.success(qrCode);
+    }
+
+    public void isCameraReady(CallbackContext callback) {
+        this.cameraReadyCallback = callback;
+    }
+
+    @Override
+    public void onCameraReady(boolean ready) {
+        if(ready){
+            Log.i("Camera Ready: ", "" + ready);
+            this.cameraReadyCallback.success("" + ready);
+        } else {
+            this.cameraReadyCallback.error("" + false);
+        }
     }
 
     public boolean hasPermisssion() {
@@ -159,18 +179,18 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements CameraPrevie
          PluginResult result;
          for (int r : grantResults) {
              if (r == PackageManager.PERMISSION_DENIED) {
-                 Log.d(LOG_TAG, "Permission Denied!");
-                 result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
-                 this.callbackContext.sendPluginResult(result);
-                 return;
+                Log.d(LOG_TAG, "Permission Denied!");
+                result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
+                this.callbackContext.sendPluginResult(result);
+                return;
              }
          }
   
          switch(requestCode)
          {
              case 0: 
-                 startCameraScan(null);
-                 break;
+                startCameraScan(null);
+                break;
          }
      }
 }

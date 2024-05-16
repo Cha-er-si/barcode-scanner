@@ -53,7 +53,7 @@ Add a constructor for the barcode scanner.
  constructor(private customBarcodeScanner: ChaersiBarcodeScanner) {}
 ```
 
-### startCamera()
+### startCameraScan()
 
 Add it on ngOnInit.
 

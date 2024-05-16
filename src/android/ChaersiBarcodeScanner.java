@@ -69,10 +69,11 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if(action.equals(STARTCAMERASCAN)) {
+            this.startCameraCallback = callbackContext;
             if(!hasPermisssion()) {
                 requestPermissions(0);
             } else {
-                startCameraScan(callbackContext);
+                startCameraScan();
             }
         } else if (action.equals(ISCAMERAREADY)) {
             isCameraReady(callbackContext);
@@ -83,8 +84,7 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
         return true;
     }
     
-    public void startCameraScan(CallbackContext callback) {
-        this.startCameraCallback = callback;
+    public void startCameraScan() {
         final float opacity = Float.parseFloat("1");
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -179,13 +179,14 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
     public void requestPermissions(int requestCode) {
         PermissionHelper.requestPermissions(this, requestCode, permissions);
     }
+
     public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException {
          PluginResult result;
          for (int r : grantResults) {
              if (r == PackageManager.PERMISSION_DENIED) {
                 Log.d(LOG_TAG, "Permission Denied!");
                 result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
-                this.callbackContext.sendPluginResult(result);
+                this.startCameraCallback.sendPluginResult(result);
                 return;
              }
          }
@@ -193,7 +194,7 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
          switch(requestCode)
          {
              case 0: 
-                startCameraScan(null);
+                startCameraScan();
                 break;
          }
      }

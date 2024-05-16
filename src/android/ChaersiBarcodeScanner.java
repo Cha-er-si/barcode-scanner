@@ -143,8 +143,12 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
 
     @Override
     public void onQRCodeScanned(String qrCode) {
-        Log.i("Received QR Code: ", qrCode);
-        this.startCameraCallback.success(qrCode);
+        if(!qrCode.isEmpty()) {
+          Log.i("Received QR Code: ", qrCode);
+          this.startCameraCallback.success(qrCode);
+        } else {
+          this.startCameraCallback.error("Error reading qr.");
+        }
     }
 
     public void isCameraReady(CallbackContext callback) {

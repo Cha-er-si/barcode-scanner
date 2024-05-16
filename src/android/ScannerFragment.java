@@ -109,13 +109,12 @@ public class ScannerFragment extends Fragment {
                     .addOnSuccessListener(barcodes -> {
                         for (Barcode barcode : barcodes) {
                             String rawValue = barcode.getRawValue();
-                            // Here, you can handle the barcode value and navigate or display it as needed
-                            // For instance, showing it in a WebView or sending it to another part of your app
-                            // Example: navigateToWebView(rawValue);
-                            System.out.println("Scanned QR Code: " + rawValue);
-                            scannerResultListener.onQRCodeScanned(rawValue);
-                            isScanning = false;
-                            unbindCamera();
+                            if(!rawValue.isEmpty()){
+                              System.out.println("Scanned QR Code: " + rawValue);
+                              scannerResultListener.onQRCodeScanned(rawValue);
+                              isScanning = false;
+                              unbindCamera();
+                            }
                         }
                     })
                     .addOnCompleteListener(task -> imageProxy.close());

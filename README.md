@@ -13,13 +13,13 @@ ionic cordova plugin add https://github.com/Cha-er-si/barcode-scanner-plugin.git
 Install the wrapper for the barcode scanner plugin
 
 ```
-npm install https://github.com/Cha-er-si/awesome-cordova-plugins-chaersi-barcodescanner.git
+npm install https://github.com/Cha-er-si/awesome-cordova-plugins-chaersi-barcodescanner.git --save-dev
 ```
 
 If you want other version of the wrapper
 
 ```
-npm install https://github.com/Cha-er-si/awesome-cordova-plugins-chaersi-barcodescanner.git#<Version Number>
+npm install https://github.com/Cha-er-si/awesome-cordova-plugins-chaersi-barcodescanner.git#<Version Number> --save-dev
 ```
 
 Add this to your config.xml

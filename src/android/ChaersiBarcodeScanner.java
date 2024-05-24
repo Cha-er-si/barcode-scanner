@@ -50,6 +50,7 @@ import androidx.annotation.ColorInt;
 public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragment.ScannerResultListener {
     private static final String STARTCAMERASCAN = "startCameraScan";
     private static final String ISCAMERAREADY = "isCameraReady";
+    private static final String CAMERAUNBIND = "cameraUnbind";
 
     private static final String LOG_TAG = "BarcodeScanner";
 
@@ -62,6 +63,7 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
 
     private CallbackContext startCameraCallback;
     private CallbackContext cameraReadyCallback;
+    private CallbackContext cameraUnbindCallback;
 
     private int containerViewId = 20;
     private ViewParent webViewParent;
@@ -77,6 +79,8 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
             }
         } else if (action.equals(ISCAMERAREADY)) {
             isCameraReady(callbackContext);
+        } else if (action.equals(CAMERAUNBIND)) {
+            cameraUnbind(callbackContext);
         } else {
             return false;
         }
@@ -163,6 +167,24 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
         } else {
             this.cameraReadyCallback.error("" + false);
         }
+    }
+
+    public void cameraUnbind(CallbackContext callback) {
+      this.cameraUnbindCallback = callback;
+      if(cameraPreview != null){
+        cameraPreview.callUnbindCamera();
+      }
+    }
+
+
+    @Override
+    public void onCameraUnbind(boolean unbind) {
+      if(unbind){
+        Log.i("Camera Unbind: ", "" + unbind);
+        this.cameraUnbindCallback.success("" + unbind);
+      } else {
+        this.cameraUnbindCallback.error("" + unbind);
+      }
     }
 
     public boolean hasPermisssion() {

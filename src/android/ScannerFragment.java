@@ -39,6 +39,7 @@ public class ScannerFragment extends Fragment {
     public interface ScannerResultListener {
         void onQRCodeScanned(String qrCode);
         void onCameraReady(boolean ready);
+        void onCameraUnbind(boolean unbind);
     }
 
     private ScannerResultListener scannerResultListener;
@@ -123,13 +124,19 @@ public class ScannerFragment extends Fragment {
         cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, imageAnalysis);
     }
 
+    public void callUnbindCamera(){
+      unbindCamera();
+    }
+
     private void unbindCamera() {
         if (cameraProviderFuture.isDone()) {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 cameraProvider.unbindAll(); // Unbind all use cases and stop the camera
+                scannerResultListener.onCameraUnbind(true);
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
+                scannerResultListener.onCameraUnbind(false);
             }
         }
     }

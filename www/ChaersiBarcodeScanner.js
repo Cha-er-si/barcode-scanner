@@ -83,4 +83,38 @@ ChaersiBarcodeScanner.isCameraReady = function (
   );
 };
 
+ChaersiBarcodeScanner.cameraUnbind = function (successCallback, errorCallback) {
+  if (errorCallback == null) {
+    errorCallback = function () {};
+  }
+
+  if (typeof errorCallback != "function") {
+    console.log(
+      "ChaersiBarcodeScanner.cameraUnbind failure: failure parameter not a function"
+    );
+    return;
+  }
+
+  if (typeof successCallback != "function") {
+    console.log(
+      "ChaersiBarcodeScanner.cameraUnbind failure: success callback parameter must be a function"
+    );
+    return;
+  }
+
+  exec(
+    function (result) {
+      scanInProgress = false;
+      successCallback(result);
+    },
+    function (error) {
+      scanInProgress = true;
+      errorCallback(error);
+    },
+    "ChaersiBarcodeScanner",
+    "cameraUnbind",
+    []
+  );
+};
+
 module.exports = ChaersiBarcodeScanner;

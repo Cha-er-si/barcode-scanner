@@ -170,10 +170,16 @@ public class ChaersiBarcodeScanner extends CordovaPlugin implements ScannerFragm
     }
 
     public void cameraUnbind(CallbackContext callback) {
-      this.cameraUnbindCallback = callback;
-      if(cameraPreview != null){
-        cameraPreview.callUnbindCamera();
-      }
+        this.cameraUnbindCallback = callback;
+        
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(cameraPreview != null){
+                cameraPreview.callUnbindCamera();
+                }
+            }
+        });
     }
 
 

@@ -34,7 +34,9 @@ When you add platform to your project for android it must be the latest
 ```
 cordova platform add android@latest
 ```
+
 for Ionic projects
+
 ```
 ionic cordova platform add android@latest
 ```
@@ -79,6 +81,23 @@ isCameraReady() returns boolean as string ("true"/"false")
 ```
 this.customBarcodeScanner
   .isCameraReady()
+  .then((result) => {
+    // Handle Result
+  })
+  .catch((error) => {
+    // Handle Error
+  });
+```
+
+You are free to do what you need from the result.
+
+### cameraUnbind()
+
+cameraUnbind() returns boolean as string ("true"/"false")
+
+```
+this.customBarcodeScanner
+  .cameraUnbind()
   .then((result) => {
     // Handle Result
   })

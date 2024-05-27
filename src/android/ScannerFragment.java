@@ -35,6 +35,7 @@ public class ScannerFragment extends Fragment {
     private BarcodeScanner scanner;
     private boolean isScanning = true;
     private String appResourcePackage;
+    private boolean fromCordova = true;
 
     public interface ScannerResultListener {
         void onQRCodeScanned(String qrCode);
@@ -114,6 +115,7 @@ public class ScannerFragment extends Fragment {
                               System.out.println("Scanned QR Code: " + rawValue);
                               scannerResultListener.onQRCodeScanned(rawValue);
                               isScanning = false;
+                              fromCordova = false;
                               unbindCamera();
                             }
                         }
@@ -133,10 +135,14 @@ public class ScannerFragment extends Fragment {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 cameraProvider.unbindAll(); // Unbind all use cases and stop the camera
-                scannerResultListener.onCameraUnbind(true);
+                if(fromCordova){
+                    scannerResultListener.onCameraUnbind(true);
+                }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
-                scannerResultListener.onCameraUnbind(false);
+                if(fromCordova){
+                    scannerResultListener.onCameraUnbind(false);
+                }
             }
         }
     }
